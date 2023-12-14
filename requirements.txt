@@ -1,0 +1,7 @@
+pandas==2.1.4
+mysql-connector-python==8.2.0
+Quandl==3.7.0
+torch==2.1.1
+requests==2.31
+prefect==2.14.10
+
