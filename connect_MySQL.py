@@ -1,6 +1,5 @@
 import mysql.connector
 from mysql.connector import Error
-import pandas as pd
 
 #A fourth arg can be passed to the connect method - database name
 def create_server_connection(host_name, user_name, user_password):
@@ -28,6 +27,7 @@ def create_database(connection, name_str):
     except Error as err:
         print(f"Error: '{err}'")
 
+#Show the list of databases in the server
 def check_database(connection):
     cursor = connection.cursor()
     query  = "SHOW DATABASES"
@@ -38,6 +38,7 @@ def check_database(connection):
     except Error as err:
         print(f"Error: '{err}'")
 
+#Connect to a particualar database with additional database name argument to first method
 def create_database_connection(host_name, user_name, user_password, db_name):
     connection = None
     try:
@@ -53,13 +54,13 @@ def create_database_connection(host_name, user_name, user_password, db_name):
 
     return connection   
 
-
-
-
-
-
-
-
-
-#pw = "koustubh"
-#connection = create_server_connection("localhost", "root", pw)
+#Execute any query on the connected database 
+def execute_query(connection, query):
+    cursor = connection.cursor()
+    try:
+        cursor.execute(query)
+        #Commit any pending transactions to the database.
+        connection.commit()
+        print("Query successful")
+    except Error as err:
+        print(f"Error: '{err}'")
