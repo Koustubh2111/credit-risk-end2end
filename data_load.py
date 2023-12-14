@@ -1,8 +1,8 @@
-#%%
+
 import connect_MySQL
 import pandas as pd
 import csv
-#%%
+
 #Connect to the database in my localhost My SQL server
 #Password can be set in environment variables
 pw = "xxxxx"
@@ -19,7 +19,7 @@ connect_MySQL.check_database(server_connection)
 
 #Connect to the database and return a new connection object
 db_connection = connect_MySQL.create_database_connection("localhost", "root", pw, db)
-#%%
+
 #Query statment for creating the data scheme for credit risk taiwan data obtained from UCI-ML repo
 #Multi-line strings - triple quote notation
 #Make sure the variable names are not in double quotes when the query in triple quote notation
@@ -53,35 +53,25 @@ CREATE TABLE creditrisk
     DEF_PAY_NEXT_MON VARCHAR(512)
 );
 """
-#%%
+
 #Create a table in the connected database using the above schema
 connect_MySQL.execute_query(db_connection, create_table_query) # Execute our defined query
-# %%
 #Add data to the empty table created using the csv file in ./data_raw
-#JOB : Uuse sql alchemy to create a connectio engine and do his more efficiently
-file_path = './data_raw/UCI_Credit_Card.csv'
-with open(file_path) as file:
-    reader = csv.DictReader(file, delimiter = ',')
-    for row in reader:
-        query = """
-                    INSERT INTO creditrisk(ID, LIMIT_BAL, SEX, EDUCATION, MARRIAGE, AGE, \
-                                        PAY_0, PAY_2, PAY_3, PAY_4, PAY_5, PAY_6, \
-                                        BILL_AMT1, BILL_AMT2, BILL_AMT3, BILL_AMT4, BILL_AMT5, BILL_AMT6, \
-                                        PAY_AMT1, PAY_AMT2, PAY_AMT3, PAY_AMT4, PAY_AMT5, PAY_AMT6, DEF_PAY_NEXT_MON) \
-                                    VALUES (%d,%d,%d,%d,%d,%d,\
-                                            %s,%s,%s,%s,%s,%s,\
-                                            %d,%d,%d,%d,%d,%d,\
-                                            %d,%d,%d,%d,%d,%d,%s)
-                """
-        
-        connect_MySQL.execute_query(db_connection, query, row)
+#JOB : Use sql alchemy to create a connectio engine and do his more efficiently
+
+# Open and read the file as a single buffer
+#https://stackoverflow.com/questions/19472922/reading-external-sql-script-in-python
+fd = open('add_data.sql', 'r')
+sqlFile = fd.read()
+fd.close()
+
+# all SQL commands (split on ';')
+sqlinsertqueries = sqlFile.split(';')
+
+for insertq in sqlinsertqueries:
+    connect_MySQL.execute_query(db_connection, insertq)
 
 
-    
-
-
-
-# %%
 #CLose connection to server
 db_connection.close()
-# %%
+
