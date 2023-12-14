@@ -5,7 +5,7 @@ import csv
 #%%
 #Connect to the database in my localhost My SQL server
 #Password can be set in environment variables
-pw = "koustubh"
+pw = "xxxxxx"
 db = "credit_risk_taiwan"
 
 #Establish a server connections
