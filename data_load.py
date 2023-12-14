@@ -5,7 +5,7 @@ import csv
 #%%
 #Connect to the database in my localhost My SQL server
 #Password can be set in environment variables
-pw = "xxxxxx"
+pw = "xxxxx"
 db = "credit_risk_taiwan"
 
 #Establish a server connections
@@ -77,8 +77,11 @@ with open(file_path) as file:
         connect_MySQL.execute_query(db_connection, query, row)
 
 
-        
+    
 
 
 
+# %%
+#CLose connection to server
+db_connection.close()
 # %%
