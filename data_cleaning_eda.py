@@ -1,5 +1,3 @@
-#This file will extract the data and perform a basic EDA
-#%%
 import pandas as pd
 import connect_MySQL
 import matplotlib.pyplot as plt
