@@ -78,14 +78,14 @@ PAY_5: Repayment status in May, 2005
 PAY_6: Repayment status in April, 2005
 '''
 
-def clean_pay(df):
-    #JOB 1 Any value in PAY_X below -1 is changed to 0 or Pay duly
-    for col in ['PAY_0', 'PAY_2', 'PAY_3', 'PAY_4', \
-           'PAY_5', 'PAY_6']:
-        fil = (df[col] == -2) | (df[col] == -1) | (df[col] == 0)
-        df.loc[fil, col] = 0
-        return df
-df = clean_pay(df)
+
+#JOB 1 Any value in PAY_X below -1 is changed to 0 or Pay duly
+replace_map = {'-2' : '0', '-1' : '0'}  
+for col in ['PAY_0', 'PAY_2', 'PAY_3', 'PAY_4', 'PAY_5', 'PAY_6']:
+    #JOB : Can be done more effectively 
+    df[col] = df.replace({col: replace_map})[col]
+
+
 
     
 # %%
