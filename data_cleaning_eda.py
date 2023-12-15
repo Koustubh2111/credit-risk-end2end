@@ -25,7 +25,7 @@ class MyException(Exception):
         return self.message
 
 #Distributions of the three categorical variables
-def plot_vars(col_list, type):
+def plot_vars(df, col_list, type):
     '''
     Understanding the categorical variables
     SEX, EDUCATION AND MARRIAGE ARE THE THREE CATEGORICAL VARIABLES
