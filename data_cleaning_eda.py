@@ -14,6 +14,7 @@ db = "credit_risk_taiwan"
 db_connection = connect_MySQL.create_database_connection("localhost", "root", pw, db)
 query = 'SELECT * FROM creditrisk'
 df = pd.read_sql(query, db_connection)
+
 # %%
 #Understanding the categorical variables
 #SEX, EDUCATION AND MARRIAGE ARE THE THREE CATEGORICAL VARIABLES
@@ -39,19 +40,52 @@ def plot_vars(col_list, type):
         for a,col in zip(ax,col_list):
             sns.histplot(df[col], ax=a)
 
-#%%
+'''
 plot_vars(['SEX', 'EDUCATION', 'MARRIAGE'], 'cat')
-#%%
+
 plot_vars(['PAY_0', 'PAY_2', 'PAY_3', 'PAY_4', \
            'PAY_5', 'PAY_6'], type='num')
-#%%
+
 plot_vars(['BILL_AMT1', 'BILL_AMT2','BILL_AMT3', 'BILL_AMT4',\
             'BILL_AMT5', 'BILL_AMT6'], type='num')
-#%%
+
 plot_vars(['PAY_AMT1','PAY_AMT2', 'PAY_AMT3', \
            'PAY_AMT4', 'PAY_AMT5', 'PAY_AMT6'], type='num')
-# %%
-# %%
+
 #Plot Output
 df.groupby('DEF_PAY_NEXT_MON').size().plot(kind='bar')
+'''
+
+# %%
+#Cleaning the dataset
+#Combining the '0' in marriage as '3'
+df.loc[df.MARRIAGE == 0, 'MARRIAGE'] = 3
+# %%
+#Combining 0,4,5 in education to 4
+df.loc[(df.EDUCATION == 5) | (df.EDUCATION == 6) | (df.EDUCATION == 0)\
+                                                                ,'EDUCATION'] = 4
+
+# %%
+'''
+The variable PAY_X describes the number of months in pay delay
+-1=pay duly, 1=payment delay for one month, 2=payment delay for two months,
+ 8=payment delay for eight months, 9=payment delay for nine months and above
+PAY_0: Repayment status in September, 2005
+PAY_2: Repayment status in August, 2005
+PAY_3: Repayment status in July, 2005
+PAY_4: Repayment status in June, 2005
+PAY_5: Repayment status in May, 2005
+PAY_6: Repayment status in April, 2005
+'''
+
+def clean_pay(df):
+    #JOB 1 Any value in PAY_X below -1 is changed to 0 or Pay duly
+    for col in ['PAY_0', 'PAY_2', 'PAY_3', 'PAY_4', \
+           'PAY_5', 'PAY_6']:
+        fil = (df[col] == -2) | (df[col] == -1) | (df[col] == 0)
+        df.loc[fil, col] = 0
+        return df
+df = clean_pay(df)
+
+    
 # %%
