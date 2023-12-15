@@ -6,8 +6,6 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 #from statsmodels.graphics import mosaicplot
 
-pw = "######"
-db = "credit_risk_taiwan"
 def get_data(pw,db):
     '''
     Connect to my SQL database and read the data into a pandas dataframe 
@@ -18,7 +16,6 @@ def get_data(pw,db):
     query = 'SELECT * FROM creditrisk'
     df = pd.read_sql(query, db_connection)
     return df
-
 
 #Raising custom exception class
 class MyException(Exception):
@@ -46,25 +43,18 @@ def plot_vars(col_list, type):
             sns.histplot(df[col], ax=a)
 
 #Data Cleaning
-def clean_data(df):
-    '''
-    The variable PAY_X describes the number of months in pay delay
-    -1=pay duly, 1=payment delay for one month, 2=payment delay for two months,
-    8=payment delay for eight months, 9=payment delay for nine months and above
-    PAY_0: Repayment status in September, 2005
-    PAY_2: Repayment status in August, 2005
-    PAY_3: Repayment status in July, 2005
-    PAY_4: Repayment status in June, 2005
-    PAY_5: Repayment status in May, 2005
-    PAY_6: Repayment status in April, 2005
-    '''
-    
+def get_clean_data(df):
+
+    #Obatin the data using the password and the database name 
+    pw = "######"
+    db = "credit_risk_taiwan"
+    df = get_data(pw,db)
+ 
     #1.Combining the '0' in marriage as '3'
     df.loc[df.MARRIAGE == 0, 'MARRIAGE'] = 3
     
     #2. Combining 0,4,5 in education to 4
-    df.loc[(df.EDUCATION == 5) | (df.EDUCATION == 6) | (df.EDUCATION == 0)\
-                                                                    ,'EDUCATION'] = 4
+    df.loc[(df.EDUCATION == 5) | (df.EDUCATION == 6) | (df.EDUCATION == 0) ,'EDUCATION'] = 4
 
     #Rename map
     rename_map = {'PAY_0' : 'PAY_SEPT',\
@@ -75,7 +65,18 @@ def clean_data(df):
                 'PAY_6' : 'PAY_APR'}
     df.rename(columns=rename_map, inplace = True)
 
+    '''
+    3. The variable PAY_X describes the number of months in pay delay
+    -1=pay duly, 1=payment delay for one month, 2=payment delay for two months,
+    8=payment delay for eight months, 9=payment delay for nine months and above
+    PAY_0: Repayment status in September, 2005
+    PAY_2: Repayment status in August, 2005
+    PAY_3: Repayment status in July, 2005
+    PAY_4: Repayment status in June, 2005
+    PAY_5: Repayment status in May, 2005
+    PAY_6: Repayment status in April, 2005
 
+    '''
     #Any value in PAY_X below -1 is changed to 0 or Pay duly
     replace_map = {'-2' : '0', '-1' : '0'}  
     for col in ['PAY_0', 'PAY_2', 'PAY_3', 'PAY_4', 'PAY_5', 'PAY_6']:
