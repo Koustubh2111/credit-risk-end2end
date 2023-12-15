@@ -79,11 +79,12 @@ PAY_6: Repayment status in April, 2005
 '''
 
 
-#JOB 1 Any value in PAY_X below -1 is changed to 0 or Pay duly
+#Any value in PAY_X below -1 is changed to 0 or Pay duly
 replace_map = {'-2' : '0', '-1' : '0'}  
 for col in ['PAY_0', 'PAY_2', 'PAY_3', 'PAY_4', 'PAY_5', 'PAY_6']:
     #JOB : Can be done more effectively 
     df[col] = df.replace({col: replace_map})[col]
+
 
 
 
