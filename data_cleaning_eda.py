@@ -4,21 +4,20 @@ import pandas as pd
 import connect_MySQL
 import matplotlib.pyplot as plt
 import seaborn as sns
-from statsmodels.graphics import mosaicplot
+#from statsmodels.graphics import mosaicplot
 
-#%%
-#Connect to my SQL database and read the data into a pandas dataframe 
-#JOB : Pandas prefers SQLAlchemy engine or Database string URL or sqlite3 DBAPI connections 
 pw = "######"
 db = "credit_risk_taiwan"
-db_connection = connect_MySQL.create_database_connection("localhost", "root", pw, db)
-query = 'SELECT * FROM creditrisk'
-df = pd.read_sql(query, db_connection)
-
-# %%
-#Understanding the categorical variables
-#SEX, EDUCATION AND MARRIAGE ARE THE THREE CATEGORICAL VARIABLES
-#JOB: Plot the histograms of the three categorical variables using a mosaic plot
+def get_data(pw,db):
+    '''
+    Connect to my SQL database and read the data into a pandas dataframe 
+    JOB : Pandas prefers SQLAlchemy engine or Database string URL 
+    or sqlite3 DBAPI connections 
+    '''
+    db_connection = connect_MySQL.create_database_connection("localhost", "root", pw, db)
+    query = 'SELECT * FROM creditrisk'
+    df = pd.read_sql(query, db_connection)
+    return df
 
 
 #Raising custom exception class
@@ -30,6 +29,12 @@ class MyException(Exception):
 
 #Distributions of the three categorical variables
 def plot_vars(col_list, type):
+    '''
+    Understanding the categorical variables
+    SEX, EDUCATION AND MARRIAGE ARE THE THREE CATEGORICAL VARIABLES
+    JOB: Plot the histograms of the three categorical variables using a mosaic plot
+
+    '''
     if type not in ['cat', 'num']:
         raise MyException("Error: Please specify the type of variable as 'cat' or 'num' as the second argument")
     fig, ax = plt.subplots(figsize = (5,5*len(col_list)),nrows=len(col_list), ncols=1)
@@ -40,7 +45,7 @@ def plot_vars(col_list, type):
         for a,col in zip(ax,col_list):
             sns.histplot(df[col], ax=a)
 
-
+#Data Cleaning
 def clean_data(df):
     '''
     The variable PAY_X describes the number of months in pay delay
