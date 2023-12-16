@@ -41,10 +41,10 @@ def plot_vars(df, col_list, type):
             sns.histplot(df[col], ax=a)
 
 #Data Cleaning
-def get_clean_data(df):
+def get_clean_data():
 
     #Obatin the data using the password and the database name 
-    pw = "######"
+    pw = "koustubh"
     db = "credit_risk_taiwan"
     df = get_data(pw,db)
  
@@ -80,6 +80,9 @@ def get_clean_data(df):
     for col in ['PAY_0', 'PAY_2', 'PAY_3', 'PAY_4', 'PAY_5', 'PAY_6']:
         #JOB : Can be done more effectively 
         df[col] = df.replace({col: replace_map})[col]
+
+    #Change dataframe to integer
+    df.apply(pd.to_numeric)
 
     return df
 
