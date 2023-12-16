@@ -83,7 +83,7 @@ def get_clean_data():
 
     #Change dataframe to integer
     for col in ['SEX','PAY_SEPT', 'PAY_AUG', 'PAY_JUL', 'PAY_JUN', 'PAY_MAY', 'PAY_APR']:
-        df[col].astype(str).astype(int)
+        df[col].astype(int)
 
     return df
 
