@@ -77,7 +77,7 @@ def get_clean_data():
     '''
     #Any value in PAY_X below -1 is changed to 0 or Pay duly
     replace_map = {'-2' : '0', '-1' : '0'}  
-    for col in ['PAY_0', 'PAY_2', 'PAY_3', 'PAY_4', 'PAY_5', 'PAY_6']:
+    for col in ['PAY_SEPT', 'PAY_AUG', 'PAY_JUL', 'PAY_JUN', 'PAY_MAY', 'PAY_APR']:
         #JOB : Can be done more effectively 
         df[col] = df.replace({col: replace_map})[col]
 
