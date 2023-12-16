@@ -82,7 +82,8 @@ def get_clean_data():
         df[col] = df.replace({col: replace_map})[col]
 
     #Change dataframe to integer
-    df.apply(pd.to_numeric)
+    for col in ['SEX','PAY_SEPT', 'PAY_AUG', 'PAY_JUL', 'PAY_JUN', 'PAY_MAY', 'PAY_APR']:
+        df[col].astype(str).astype(int)
 
     return df
 
