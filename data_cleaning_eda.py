@@ -44,7 +44,7 @@ def plot_vars(df, col_list, type):
 def get_clean_data():
 
     #Obatin the data using the password and the database name 
-    pw = "koustubh"
+    pw = "XXXXX"
     db = "credit_risk_taiwan"
     df = get_data(pw,db)
  
