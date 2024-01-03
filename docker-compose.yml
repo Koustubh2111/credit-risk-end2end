@@ -1,10 +1,10 @@
 version: '3'
 
 services:
-  database:
+  mydatabase:
     image: 'postgres:latest'
     ports:
-      - 15432:5432
+      - 5433:5433
     env_file:
       - .env
     networks:
