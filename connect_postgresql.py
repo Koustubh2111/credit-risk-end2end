@@ -1,10 +1,13 @@
 #%%
-import psycopg2
-from psycopg2 import sql
+#import psycopg2
+#from psycopg2 import sql
+import asyncio
+import asyncpg
 
 #%%
 
-conn = psycopg2.connect("host=localhost port=5433")
+#conn = psycopg2.connect("host=localhost port=5433")
+
 
 #%%
 #Create a temprary user and data base in the server connection
